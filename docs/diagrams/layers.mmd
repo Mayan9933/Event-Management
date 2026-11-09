@@ -1,0 +1,8 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','primaryColor':'#EAF1FB','primaryBorderColor':'#1F3A5F','lineColor':'#1F3A5F'}}}%%
+flowchart LR
+  R[Routes] --> C[Controllers] --> S[Services<br/>PlatformService, AuthService] --> D[Domain<br/>entities, value objects,<br/>aggregates, events]
+  S --> P[[Repository contracts]]
+  M[Mongo repositories] -. implements .-> P
+  M --> DB[(MongoDB)]
+  K{{container.js<br/>composition root}} -. wires .-> S
+  K -. wires .-> M

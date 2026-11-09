@@ -1,0 +1,35 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','primaryColor':'#EAF1FB','primaryBorderColor':'#1F3A5F','lineColor':'#1F3A5F'}}}%%
+classDiagram
+  direction LR
+  class AccountFactory {
+    +create(data)$
+    +register(role, cls)$
+  }
+  class Account {
+    <<abstract>>
+    -id
+    -name
+    -email
+    -role
+    -status
+    +ensureActive()
+    +getWorkspaceSummary()*
+    +canCreateEvents()
+    +canManagePlatform()
+    +canRegisterForEvents()
+    +canManage(ownerId)
+  }
+  class Student {
+    +canRegisterForEvents()
+  }
+  class Organizer {
+    -clubName
+    +canCreateEvents()
+  }
+  class Admin {
+    +canManagePlatform()
+  }
+  AccountFactory ..> Account : creates
+  Account <|-- Student
+  Account <|-- Organizer
+  Account <|-- Admin

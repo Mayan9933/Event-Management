@@ -1,0 +1,30 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'15px','primaryColor':'#EAF1FB','primaryBorderColor':'#1F3A5F','lineColor':'#1F3A5F','actorBkg':'#1F3A5F','actorTextColor':'#ffffff'}}}%%
+sequenceDiagram
+  actor Org as Organizer
+  participant UI as React UI
+  participant C as Controller
+  participant S as PlatformService
+  participant F as AccountFactory
+  participant E as CampusEvent
+  participant R as EventRepository
+  participant B as DomainEventBus
+  Org->>UI: Submit event form
+  UI->>C: POST /organizer/events
+  C->>S: createEvent(input, auth)
+  S->>F: create(auth)
+  F-->>S: Organizer
+  S->>S: ensureActive(), canCreateEvents()
+  S->>E: new CampusEvent(input)
+  E->>E: validate, compose form + window
+  alt invalid input
+    E-->>S: throw ValidationError
+    S-->>C: error
+    C-->>UI: 400 JSON
+  else valid
+    E-->>S: entity
+    S->>R: create(entity.toPersistence())
+    R-->>S: saved event
+    S->>B: publish(EVENT_PUBLISHED)
+    S-->>C: result
+    C-->>UI: 201 JSON
+  end

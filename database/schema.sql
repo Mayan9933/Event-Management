@@ -1,0 +1,2 @@
+-- This project now uses MongoDB, not MySQL.
+-- No SQL import is required. Mongoose creates collections automatically.

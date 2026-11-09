@@ -1,0 +1,18 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','primaryColor':'#EAF1FB','primaryBorderColor':'#1F3A5F','lineColor':'#1F3A5F'},'flowchart':{'nodeSpacing':25,'rankSpacing':28}}}%%
+flowchart TD
+  A([Submit registration]) --> B{Published and<br/>needs registration?}
+  B -- No --> R[/Reject: DomainError 4xx/]
+  B -- Yes --> C{Window open?}
+  C -- No --> R
+  C -- Yes --> D{Draft?}
+  D -- Yes --> H[Skip type checks]
+  D -- No --> F{Event full?}
+  F -- Yes --> R
+  F -- No --> G[Validate fields]
+  H --> I{All required<br/>filled?}
+  G --> I
+  I -- Yes --> J[COMPLETE]
+  I -- No --> K[INCOMPLETE]
+  J --> L[Save, publish event]
+  K --> L
+  L --> N([Done])

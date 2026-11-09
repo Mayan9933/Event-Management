@@ -1,0 +1,44 @@
+%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','primaryColor':'#EAF1FB','primaryBorderColor':'#1F3A5F','lineColor':'#1F3A5F'}}}%%
+classDiagram
+  direction LR
+  class EventCatalog {
+    +countByPhase()
+  }
+  class CampusEvent {
+    <<aggregate root>>
+    -status
+    -capacity
+    +cancel()
+    +getPhase()
+    +isManagedBy(account)
+  }
+  class RegistrationWindow {
+    <<value object>>
+  }
+  class RegistrationForm {
+    +process(formData, isDraft)
+  }
+  class RegistrationField {
+    <<abstract>>
+    +validateValue(v)*
+  }
+  class TextField
+  class EmailField
+  class NumberField
+  class SelectField
+  class Organizer
+  class Student
+  class Registration {
+    status
+  }
+  EventCatalog o-- CampusEvent : aggregation
+  CampusEvent *-- RegistrationWindow : composition
+  CampusEvent *-- RegistrationForm : composition
+  RegistrationForm *-- RegistrationField : composition
+  RegistrationField <|-- TextField
+  RegistrationField <|-- EmailField
+  RegistrationField <|-- NumberField
+  RegistrationField <|-- SelectField
+  Organizer --> CampusEvent : organizes
+  Student --> Registration : makes
+  Registration --> CampusEvent : for
